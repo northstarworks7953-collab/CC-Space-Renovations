@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CC Space Renovations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --chalk:    #F5F2ED;
+      --plaster:  #E8E3DB;
+      --slate:    #2B2D2F;
+      --iron:     #4A4D50;
+      --clay:     #8C6B4A;
+      --warm:     #C4A882;
+      --white:    #FFFFFF;
+
+      --display:  'Cormorant Garamond', Georgia, serif;
+      --body:     'DM Sans', system-ui, sans-serif;
+
+      --section-pad: clamp(4rem, 10vw, 8rem);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--chalk);
+      color: var(--slate);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem clamp(1.5rem, 5vw, 4rem);
+      background: rgba(245, 242, 237, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--plaster);
+    }
+
+    .nav-logo {
+      font-family: var(--display);
+      font-size: 1.35rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--slate);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--clay); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--iron);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--clay); }
+
+    .nav-cta {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--white) !important;
+      background: var(--slate);
+      padding: 0.6rem 1.4rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--clay) !important; color: var(--white) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(3rem, 8vw, 6rem) clamp(2rem, 5vw, 5rem);
+    }
+
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-headline {
+      font-family: var(--display);
+      font-size: clamp(3rem, 5.5vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--slate);
+      margin-bottom: 1.8rem;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--clay);
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--iron);
+      max-width: 38ch;
+      margin-bottom: 2.8rem;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--clay);
+      color: var(--white);
+      padding: 1rem 2.2rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--slate); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--slate);
+      text-decoration: none;
+      border-bottom: 1px solid var(--warm);
+      padding-bottom: 2px;
+    }
+
+    .hero-visual {
+      position: relative;
+      overflow: hidden;
+      background: var(--slate);
+    }
+
+    /* Signature element: abstract architectural lines SVG overlay */
+    .hero-visual-inner {
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(135deg, #3a3228 0%, #2B2D2F 60%, #1e2022 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .arch-lines {
+      position: absolute;
+      inset: 0;
+      opacity: 0.18;
+    }
+
+    .hero-room-label {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--warm);
+    }
+
+    .hero-badge {
+      position: absolute;
+      top: 2.5rem;
+      right: 2.5rem;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 1px solid var(--warm);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--warm);
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      line-height: 1.6;
+    }
+
+    /* big stat */
+    .hero-stat {
+      color: var(--chalk);
+      text-align: center;
+      z-index: 2;
+    }
+    .hero-stat-num {
+      font-family: var(--display);
+      font-size: clamp(5rem, 10vw, 10rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .hero-stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--warm);
+      margin-top: 0.5rem;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      background: var(--slate);
+      overflow: hidden;
+      padding: 1rem 0;
+      white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-flex;
+      gap: 3rem;
+      animation: marquee 28s linear infinite;
+    }
+    .marquee-item {
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--warm);
+      flex-shrink: 0;
+    }
+    .marquee-dot { color: var(--clay); margin: 0 0.5rem; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── SERVICES ── */
+    .services {
+      padding: var(--section-pad) clamp(1.5rem, 5vw, 5rem);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .section-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: var(--display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--slate);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1px;
+      background: var(--plaster);
+      border: 1px solid var(--plaster);
+    }
+
+    .service-card {
+      background: var(--chalk);
+      padding: 2.5rem 2rem;
+      transition: background 0.25s;
+    }
+    .service-card:hover { background: var(--white); }
+
+    .service-icon {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 1.5rem;
+      color: var(--clay);
+    }
+
+    .service-name {
+      font-family: var(--display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--slate);
+      margin-bottom: 0.8rem;
+    }
+
+    .service-desc {
+      font-size: 0.88rem;
+      color: var(--iron);
+      line-height: 1.8;
+    }
+
+    /* ── PROCESS ── */
+    .process {
+      background: var(--slate);
+      color: var(--chalk);
+      padding: var(--section-pad) clamp(1.5rem, 5vw, 5rem);
+    }
+
+    .process .section-title { color: var(--chalk); }
+    .process .section-eyebrow { color: var(--warm); }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+      margin-top: 4rem;
+    }
+
+    .step { border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1.5rem; }
+    .step-num {
+      font-family: var(--display);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--clay);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .step-title {
+      font-family: var(--display);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--chalk);
+      margin-bottom: 0.6rem;
+    }
+    .step-desc { font-size: 0.85rem; color: rgba(245,242,237,0.65); line-height: 1.8; }
+
+    /* ── ABOUT ── */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 60vh;
+    }
+
+    .about-visual {
+      background: var(--plaster);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+
+    .about-initials {
+      font-family: var(--display);
+      font-size: clamp(8rem, 14vw, 16rem);
+      font-weight: 300;
+      color: var(--warm);
+      opacity: 0.25;
+      letter-spacing: -0.05em;
+      user-select: none;
+    }
+
+    .about-tagline {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      right: 2rem;
+      font-family: var(--display);
+      font-size: 1.1rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--iron);
+      line-height: 1.5;
+    }
+
+    .about-content {
+      padding: clamp(3rem, 6vw, 5rem) clamp(2rem, 5vw, 4rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .about-content p {
+      font-size: 0.95rem;
+      color: var(--iron);
+      line-height: 1.9;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--plaster);
+      flex-wrap: wrap;
+    }
+    .about-stat-num {
+      font-family: var(--display);
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--clay);
+      line-height: 1;
+    }
+    .about-stat-label { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--iron); margin-top: 0.3rem; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials {
+      padding: var(--section-pad) clamp(1.5rem, 5vw, 5rem);
+      background: var(--white);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+
+    .testimonial {
+      padding: 2.5rem 2rem;
+      border: 1px solid var(--plaster);
+      position: relative;
+    }
+
+    .testimonial::before {
+      content: '"';
+      font-family: var(--display);
+      font-size: 5rem;
+      font-weight: 300;
+      color: var(--plaster);
+      position: absolute;
+      top: 0.5rem;
+      left: 1.5rem;
+      line-height: 1;
+    }
+
+    .testimonial-text {
+      font-family: var(--display);
+      font-size: 1.1rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--slate);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .testimonial-author { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--clay); }
+
+    /* ── CONTACT ── */
+    .contact {
+      background: var(--clay);
+      padding: var(--section-pad) clamp(1.5rem, 5vw, 5rem);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: center;
+    }
+
+    .contact-info { color: var(--white); }
+    .contact-info .section-eyebrow { color: rgba(255,255,255,0.6); }
+    .contact-info .section-title { color: var(--white); }
+    .contact-info p { font-size: 0.95rem; color: rgba(255,255,255,0.75); line-height: 1.8; margin-top: 1.5rem; }
+
+    .contact-details { margin-top: 2.5rem; }
+    .contact-detail {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.9rem;
+    }
+    .contact-detail svg { flex-shrink: 0; opacity: 0.7; }
+
+    .contact-form { background: var(--white); padding: 2.5rem; }
+
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--iron);
+      margin-bottom: 0.5rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--plaster);
+      background: var(--chalk);
+      font-family: var(--body);
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--slate);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--clay); background: var(--white); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--clay);
+      color: var(--white);
+      border: none;
+      font-family: var(--body);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 0.5rem;
+    }
+    .btn-submit:hover { background: var(--slate); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--slate);
+      color: rgba(245,242,237,0.5);
+      padding: 2rem clamp(1.5rem, 5vw, 5rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+    .footer-logo {
+      font-family: var(--display);
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--chalk);
+      text-decoration: none;
+    }
+    .footer-logo span { color: var(--warm); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-visual { min-height: 45vw; order: -1; }
+      .about { grid-template-columns: 1fr; }
+      .contact { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-track { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">CC<span>·</span>Space</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">CC Space Renovations</p>
+    <h1 class="hero-headline">
+      Spaces built<br>to <em>outlast</em><br>the moment
+    </h1>
+    <p class="hero-sub">
+      Thoughtful renovations for homes and interiors — crafted with precision, delivered with care. One client at a time.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Start Your Project</a>
+      <a href="#services" class="btn-ghost">
+        See Services
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-visual-inner">
+      <!-- Architectural SVG lines — the signature element -->
+      <svg class="arch-lines" viewBox="0 0 600 800" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <line x1="0" y1="200" x2="600" y2="200" stroke="#C4A882" stroke-width="0.6"/>
+        <line x1="0" y1="600" x2="600" y2="600" stroke="#C4A882" stroke-width="0.6"/>
+        <line x1="150" y1="0" x2="150" y2="800" stroke="#C4A882" stroke-width="0.6"/>
+        <line x1="450" y1="0" x2="450" y2="800" stroke="#C4A882" stroke-width="0.6"/>
+        <rect x="150" y="200" width="300" height="400" stroke="#C4A882" stroke-width="1"/>
+        <line x1="150" y1="200" x2="300" y2="80" stroke="#C4A882" stroke-width="0.6"/>
+        <line x1="450" y1="200" x2="300" y2="80" stroke="#C4A882" stroke-width="0.6"/>
+        <line x1="150" y1="600" x2="0" y2="720" stroke="#C4A882" stroke-width="0.6"/>
+        <line x1="450" y1="600" x2="600" y2="720" stroke="#C4A882" stroke-width="0.6"/>
+        <rect x="220" y="460" width="160" height="140" stroke="#C4A882" stroke-width="0.8"/>
+        <line x1="300" y1="460" x2="300" y2="600" stroke="#C4A882" stroke-width="0.5"/>
+        <rect x="195" y="270" width="90" height="130" stroke="#C4A882" stroke-width="0.8"/>
+        <rect x="315" y="270" width="90" height="130" stroke="#C4A882" stroke-width="0.8"/>
+        <!-- floor hatching -->
+        <line x1="0" y1="740" x2="200" y2="600" stroke="#C4A882" stroke-width="0.3"/>
+        <line x1="60" y1="800" x2="260" y2="600" stroke="#C4A882" stroke-width="0.3"/>
+        <line x1="140" y1="800" x2="340" y2="600" stroke="#C4A882" stroke-width="0.3"/>
+        <line x1="220" y1="800" x2="420" y2="600" stroke="#C4A882" stroke-width="0.3"/>
+        <line x1="300" y1="800" x2="500" y2="600" stroke="#C4A882" stroke-width="0.3"/>
+        <line x1="380" y1="800" x2="580" y2="600" stroke="#C4A882" stroke-width="0.3"/>
+        <line x1="460" y1="800" x2="660" y2="600" stroke="#C4A882" stroke-width="0.3"/>
+      </svg>
+
+      <div class="hero-stat">
+        <div class="hero-stat-num">12+</div>
+        <div class="hero-stat-label">Years of craft</div>
+      </div>
+      <div class="hero-badge">Licensed &amp; Insured</div>
+    </div>
+    <p class="hero-room-label">Architectural Elevation — Interior</p>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-item">Kitchen Remodels</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Bathroom Renovations</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Basement Finishing</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Home Additions</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Flooring &amp; Tile</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Interior Painting</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Drywall &amp; Framing</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Custom Carpentry</span><span class="marquee-dot">◆</span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">Kitchen Remodels</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Bathroom Renovations</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Basement Finishing</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Home Additions</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Flooring &amp; Tile</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Interior Painting</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Drywall &amp; Framing</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Custom Carpentry</span><span class="marquee-dot">◆</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-header">
+    <div>
+      <p class="section-eyebrow">What We Do</p>
+      <h2 class="section-title">Every room,<br>done right</h2>
+    </div>
+  </div>
+
+  <div class="services-grid">
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.3">
+        <rect x="4" y="10" width="28" height="20" rx="1"/>
+        <path d="M4 16h28M12 10V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/>
+        <line x1="14" y1="22" x2="14" y2="26"/><line x1="22" y1="22" x2="22" y2="26"/>
+      </svg>
+      <h3 class="service-name">Kitchen Remodels</h3>
+      <p class="service-desc">Full kitchen transformations — from cabinet installation and countertop replacement to complete layout redesigns that improve how you live in the space.</p>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.3">
+        <rect x="6" y="6" width="24" height="24" rx="1"/>
+        <ellipse cx="18" cy="22" rx="6" ry="4"/>
+        <rect x="12" y="10" width="12" height="6" rx="1"/>
+        <line x1="9" y1="18" x2="9" y2="28"/><line x1="27" y1="18" x2="27" y2="28"/>
+      </svg>
+      <h3 class="service-name">Bathroom Renovations</h3>
+      <p class="service-desc">Showers, vanities, tilework, lighting. Whether it's a powder room refresh or a spa-style primary bath, built to last and designed with precision.</p>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.3">
+        <path d="M4 28L18 6l14 22H4z"/>
+        <line x1="18" y1="6" x2="18" y2="28"/>
+        <line x1="11" y1="17" x2="25" y2="17"/>
+      </svg>
+      <h3 class="service-name">Home Additions</h3>
+      <p class="service-desc">Sunrooms, extra bedrooms, expanded living areas. We handle framing, insulation, drywall, and finishing so the addition feels like it was always there.</p>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.3">
+        <rect x="4" y="20" width="28" height="12" rx="1"/>
+        <rect x="9" y="12" width="8" height="8"/><rect x="19" y="12" width="8" height="8"/>
+        <line x1="4" y1="20" x2="4" y2="32"/><line x1="32" y1="20" x2="32" y2="32"/>
+      </svg>
+      <h3 class="service-name">Basement Finishing</h3>
+      <p class="service-desc">Turn unused square footage into usable space — a home office, gym, entertainment room, or guest suite. Waterproofing and egress included.</p>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.3">
+        <path d="M4 30 L4 8 L18 4 L32 8 L32 30 Z"/>
+        <rect x="13" y="18" width="10" height="12"/>
+        <line x1="4" y1="8" x2="18" y2="4"/><line x1="32" y1="8" x2="18" y2="4"/>
+      </svg>
+      <h3 class="service-name">Flooring &amp; Tile</h3>
+      <p class="service-desc">Hardwood, LVP, ceramic, porcelain, natural stone. Precise cuts, leveled substrates, and grouting done to stand the test of daily life.</p>
+    </div>
+
+    <div class="service-card">
+      <svg class="service-icon" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.3">
+        <rect x="6" y="4" width="24" height="28" rx="1"/>
+        <line x1="10" y1="12" x2="26" y2="12"/>
+        <line x1="10" y1="18" x2="26" y2="18"/>
+        <line x1="10" y1="24" x2="20" y2="24"/>
+      </svg>
+      <h3 class="service-name">Drywall &amp; Painting</h3>
+      <p class="service-desc">Smooth finishes, crisp edges, and color that holds. From new framing and drywall hang to final coat — interior spaces prepared and painted properly.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="section-header">
+    <div>
+      <p class="section-eyebrow">How It Works</p>
+      <h2 class="section-title">Simple process,<br>no surprises</h2>
+    </div>
+  </div>
+
+  <div class="process-steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3 class="step-title">Consultation</h3>
+      <p class="step-desc">We meet on-site to walk through your space, understand what you're envisioning, and ask the right questions — no pressure, no pitch.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3 class="step-title">Detailed Quote</h3>
+      <p class="step-desc">You receive a written, line-item estimate within a few days. Every cost is explained — labor, materials, timeline. Nothing hidden.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3 class="step-title">Scheduled Build</h3>
+      <p class="step-desc">We agree on a start date and work to the schedule. You hear from us regularly — not just when there's a problem.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <h3 class="step-title">Final Walkthrough</h3>
+      <p class="step-desc">Before we close out, we walk the project with you. Anything that needs attention gets addressed — your sign-off matters.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-visual">
+    <div class="about-initials">CC</div>
+    <p class="about-tagline">"I treat every project like it's my own home."</p>
+  </div>
+  <div class="about-content">
+    <p class="section-eyebrow">About CC Space</p>
+    <h2 class="section-title" style="font-family: var(--display); font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; line-height: 1.1; color: var(--slate); margin-bottom: 1.5rem;">A craftsperson,<br>not a contractor mill</h2>
+    <p>CC Space Renovations is a sole proprietorship — which means when you hire us, you work directly with the person doing the work. No subcontracted surprises, no passing you down the chain.</p>
+    <p>With over a decade of hands-on renovation experience, every project gets the same level of attention: careful planning, honest communication, and work that holds up for years.</p>
+    <p>We take on a limited number of projects at a time so the quality never slips.</p>
+    <div class="about-stats">
+      <div>
+        <div class="about-stat-num">150+</div>
+        <div class="about-stat-label">Projects Completed</div>
+      </div>
+      <div>
+        <div class="about-stat-num">12+</div>
+        <div class="about-stat-label">Years Experience</div>
+      </div>
+      <div>
+        <div class="about-stat-num">100%</div>
+        <div class="about-stat-label">Owner-operated</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-header">
+    <div>
+      <p class="section-eyebrow">Client Words</p>
+      <h2 class="section-title">What people say</h2>
+    </div>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <p class="testimonial-text">Our kitchen looks like something out of a magazine. The timeline was accurate, the cost matched the quote exactly, and the work is flawless. Best contractor decision we've ever made.</p>
+      <p class="testimonial-author">Sarah M. — Kitchen Remodel</p>
+    </div>
+    <div class="testimonial">
+      <p class="testimonial-text">I was nervous hiring someone for a full basement finish. CC walked me through every step and the result is better than I imagined. My kids live down there now.</p>
+      <p class="testimonial-author">James T. — Basement Finishing</p>
+    </div>
+    <div class="testimonial">
+      <p class="testimonial-text">Honest, clean, on time. Three things I'd stopped expecting from contractors. CC Space is the real deal — I've already referred three neighbors.</p>
+      <p class="testimonial-author">Diane R. — Bathroom Renovation</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-info">
+    <p class="section-eyebrow">Get in Touch</p>
+    <h2 class="section-title">Let's talk about your space</h2>
+    <p>Ready to get started, or just want to explore what's possible? Fill out the form and expect a response within one business day.</p>
+    <div class="contact-details">
+      <div class="contact-detail">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 4l6 5 6-5"/><rect x="1" y="3" width="14" height="10" rx="1"/></svg>
+        hello@ccspacerenovations.com
+      </div>
+      <div class="contact-detail">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 2a1 1 0 0 1 1-1h2l1 3-1.5 1.5a11 11 0 0 0 4 4L11 8l3 1v2a1 1 0 0 1-1 1C5.4 12 1 7.6 1 3a1 1 0 0 1 1-1"/></svg>
+        (555) 000-0000
+      </div>
+      <div class="contact-detail">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="7" r="3"/><path d="M8 1a6 6 0 0 1 6 6c0 4-6 9-6 9S2 11 2 7a6 6 0 0 1 6-6z"/></svg>
+        Serving the greater metro area
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="first-name">First Name</label>
+        <input type="text" id="first-name" placeholder="Jane" />
+      </div>
+      <div class="form-group">
+        <label for="last-name">Last Name</label>
+        <input type="text" id="last-name" placeholder="Smith" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="jane@example.com" />
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone (optional)</label>
+      <input type="tel" id="phone" placeholder="(555) 000-0000" />
+    </div>
+    <div class="form-group">
+      <label for="project-type">Project Type</label>
+      <select id="project-type">
+        <option value="" disabled selected>Select a service</option>
+        <option>Kitchen Remodel</option>
+        <option>Bathroom Renovation</option>
+        <option>Basement Finishing</option>
+        <option>Home Addition</option>
+        <option>Flooring &amp; Tile</option>
+        <option>Drywall &amp; Painting</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="message">Project Details</label>
+      <textarea id="message" placeholder="Tell us about your project — scope, timeline, any questions…"></textarea>
+    </div>
+    <button class="btn-submit" type="button">Send Message</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="footer-logo">CC<span>·</span>Space Renovations</a>
+  <span>© 2026 CC Space Renovations. All rights reserved.</span>
+  <span>Licensed &amp; Insured</span>
+</footer>
+
+</body>
+</html>
